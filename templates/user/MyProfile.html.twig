@@ -10,5 +10,5 @@
         <p>Prénom: {{ app.user.prenom }}</p>
         <p>Tél: {{ app.user.telephone }}</p>
 
-        <a href=""><button>Modifier mon Profil</button></a>
+        <a href="{{ path('modify_profile') }}"><button>Modifier mon Profil</button></a>
 {% endblock %}
