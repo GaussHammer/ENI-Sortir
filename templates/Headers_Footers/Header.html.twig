@@ -1,0 +1,8 @@
+<header>
+    <h1>SORTIR</h1>
+
+    {% if app.user != null %}
+        <a href="{{ path('app_user') }}">Mon profil</a>
+        <a href="{{ path('app_logout') }}">Logout</a>
+    {% endif %}
+</header>

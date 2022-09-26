@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+        <h1>Mon Profil</h1>
+        <p>Pseudo: {{ app.user.pseudo }}</p>
+        <p>Email: {{ app.user.email }}</p>
+        <p>Nom: {{ app.user.nom }}</p>
+        <p>Prénom: {{ app.user.prenom }}</p>
+        <p>Tél: {{ app.user.telephone }}</p>
+
+        <a href=""><button>Modifier mon Profil</button></a>
+{% endblock %}
