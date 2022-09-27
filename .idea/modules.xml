@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sortir.iml" filepath="$PROJECT_DIR$/.idea/sortir.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ENI-Sortir.iml" filepath="$PROJECT_DIR$/.idea/ENI-Sortir.iml" />
     </modules>
   </component>
 </project>
