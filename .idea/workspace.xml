@@ -2,21 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b2ec5347-b26c-48bf-b289-fccf80b1e58a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Controller/MainController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/RegistrationController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/SecurityController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/ParticipantType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/RegistrationFormType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Security/ParticipantAuthenticator.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/registration/register.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/ParticipantController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/EditProfile.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/participant/_delete_form.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/participant/_form.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/participant/edit.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/participant/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/participant/show.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Campus.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Campus.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Participant.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Participant.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Sortie.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Sortie.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ParticipantRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ParticipantRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20220927084303.php" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/Version20220927084303.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20220927094248.php" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/Version20220927094248.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,7 +212,7 @@
       <updated>1664267267662</updated>
       <workItem from="1664267270406" duration="13382000" />
       <workItem from="1664345195983" duration="6636000" />
-      <workItem from="1664357979178" duration="1491000" />
+      <workItem from="1664357979178" duration="6433000" />
     </task>
     <servers />
   </component>

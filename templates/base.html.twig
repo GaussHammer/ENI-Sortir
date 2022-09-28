@@ -14,6 +14,10 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        {%if(app.user) %}
+        <a href="{{ path('app_participant_index') }}">liste utilisateurs</a>
+        {% endif  %}
+        {% endblock %}
     </body>
 </html>
