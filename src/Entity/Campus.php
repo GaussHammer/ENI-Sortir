@@ -27,19 +27,19 @@ class Campus
     private $nom;
 
     /**
-     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="Campus")
-     */
-    private $participants;
-
-    /**
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="campus")
      */
     private $sorties;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="campus")
+     */
+    private $participant;
+
     public function __construct()
     {
-        $this->participants = new ArrayCollection();
         $this->sorties = new ArrayCollection();
+        $this->participant = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,35 +59,6 @@ class Campus
         return $this;
     }
 
-    /**
-     * @return Collection<int, Participant>
-     */
-    public function getParticipants(): Collection
-    {
-        return $this->participants;
-    }
-
-    public function addParticipant(Participant $participant): self
-    {
-        if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-            $participant->setCampus($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipant(Participant $participant): self
-    {
-        if ($this->participants->removeElement($participant)) {
-            // set the owning side to null (unless already changed)
-            if ($participant->getCampus() === $this) {
-                $participant->setCampus(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Sortie>
@@ -113,6 +84,36 @@ class Campus
             // set the owning side to null (unless already changed)
             if ($sorty->getCampus() === $this) {
                 $sorty->setCampus(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participant>
+     */
+    public function getParticipant(): Collection
+    {
+        return $this->participant;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participant->contains($participant)) {
+            $this->participant[] = $participant;
+            $participant->setCampus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        if ($this->participants->removeElement($participant)) {
+            // set the owning side to null (unless already changed)
+            if ($participant->getCampus() === $this) {
+                $participant->setCampus(null);
             }
         }
 

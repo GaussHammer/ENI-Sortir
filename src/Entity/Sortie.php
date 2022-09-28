@@ -49,16 +49,8 @@ class Sortie
      */
     private $infoSortie;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="participe")
-     */
-    private $participants;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortiesOrganisees")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $organisateur;
+    
 
     /**
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="sorties")
@@ -78,10 +70,23 @@ class Sortie
      */
     private $etat;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="participe")
+     */
+    private $participant;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="organisateur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organisateurs;
+
     public function __construct()
     {
-        $this->participants = new ArrayCollection();
+        $this->participant = new ArrayCollection();
     }
+
+
 
     public function getId(): ?int
     {
@@ -160,44 +165,11 @@ class Sortie
         return $this;
     }
 
-    /**
-     * @return Collection<int, Participant>
-     */
-    public function getParticipants(): Collection
-    {
-        return $this->participants;
-    }
 
-    public function addParticipant(Participant $participant): self
-    {
-        if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-            $participant->addEstInscrit($this);
-        }
 
-        return $this;
-    }
 
-    public function removeParticipant(Participant $participant): self
-    {
-        if ($this->participants->removeElement($participant)) {
-            $participant->removeEstInscrit($this);
-        }
 
-        return $this;
-    }
 
-    public function getOrganisateur(): ?Participant
-    {
-        return $this->organisateur;
-    }
-
-    public function setOrganisateur(?Participant $organisateur): self
-    {
-        $this->organisateur = $organisateur;
-
-        return $this;
-    }
 
     public function getCampus(): ?Campus
     {
@@ -231,6 +203,45 @@ class Sortie
     public function setEtat(?Etat $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participant>
+     */
+    public function getParticipant(): Collection
+    {
+        return $this->participant;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participant->contains($participant)) {
+            $this->participant[] = $participant;
+            $participant->addParticipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        if ($this->participant->removeElement($participant)) {
+            $participant->removeParticipe($this);
+        }
+
+        return $this;
+    }
+
+    public function getOrganisateur(): ?Participant
+    {
+        return $this->organisateurs;
+    }
+
+    public function setOrganisateur(?Participant $organisateurs): self
+    {
+        $this->organisateurs = $organisateurs;
 
         return $this;
     }

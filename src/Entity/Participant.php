@@ -12,8 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"pseudo"})
- * @UniqueEntity(fields={"mail"})
+ * @UniqueEntity(fields={"pseudo"}, message="There is already an account with this pseudo")
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -23,6 +22,17 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $pseudo;
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $motPasse;
 
     /**
      * @ORM\Column(type="string", length=30)
@@ -35,11 +45,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=30, unique=true)
-     */
-    private $pseudo;
-
-    /**
      * @ORM\Column(type="string", length=10)
      */
     private $telephone;
@@ -48,11 +53,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=50, unique=true)
      */
     private $mail;
-
-    /**
-     * @ORM\Column(type="string", length=30)
-     */
-    private $motPasse;
 
     /**
      * @ORM\Column(type="boolean")
@@ -65,30 +65,103 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     private $actif;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participants")
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="participant")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Campus;
+    private $campus;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
+     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participant")
      */
     private $participe;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateur")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organisateurs")
      */
-    private $sortiesOrganisees;
+    private $organisateur;
 
     public function __construct()
     {
         $this->participe = new ArrayCollection();
-        $this->sortiesOrganisees = new ArrayCollection();
+        $this->organisateur = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getPseudo(): ?string
+    {
+        return $this->pseudo;
+    }
+
+    public function setPseudo(string $pseudo): self
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->pseudo;
+    }
+
+    /**
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->pseudo;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(){
+        return array();
+    }
+
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->motPasse;
+    }
+
+    public function setPassword(string $motPasse): self
+    {
+        $this->motPasse = $motPasse;
+
+        return $this;
+    }
+
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getNom(): ?string
@@ -111,18 +184,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
 
         return $this;
     }
@@ -151,17 +212,6 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getMotPasse(): ?string
-    {
-        return $this->motPasse;
-    }
-
-    public function setMotPasse(string $motPasse): self
-    {
-        $this->motPasse = $motPasse;
-
-        return $this;
-    }
 
     public function isAdministrateur(): ?bool
     {
@@ -189,12 +239,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getCampus(): ?Campus
     {
-        return $this->Campus;
+        return $this->campus;
     }
 
-    public function setCampus(?Campus $Campus): self
+    public function setCampus(?Campus $campus): self
     {
-        $this->Campus = $Campus;
+        $this->campus = $campus;
 
         return $this;
     }
@@ -207,18 +257,18 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->participe;
     }
 
-    public function addEstInscrit(Sortie $estInscrit): self
+    public function addParticipe(Sortie $participe): self
     {
-        if (!$this->participe->contains($estInscrit)) {
-            $this->participe[] = $estInscrit;
+        if (!$this->participe->contains($participe)) {
+            $this->participe[] = $participe;
         }
 
         return $this;
     }
 
-    public function removeEstInscrit(Sortie $estInscrit): self
+    public function removeParticipe(Sortie $participe): self
     {
-        $this->participe->removeElement($estInscrit);
+        $this->participe->removeElement($participe);
 
         return $this;
     }
@@ -226,55 +276,31 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Sortie>
      */
-    public function getSortiesOrganisees(): Collection
+    public function getOrganisateur(): Collection
     {
-        return $this->sortiesOrganisees;
+        return $this->organisateur;
     }
 
-    public function addSortieOrganisee(Sortie $sortie): self
+    public function addOrganisateur(Sortie $organisateur): self
     {
-        if (!$this->sortiesOrganisees->contains($sortie)) {
-            $this->sortiesOrganisees[] = $sortie;
-            $sortie->setOrganisateur($this);
+        if (!$this->organisateur->contains($organisateur)) {
+            $this->organisateur[] = $organisateur;
+            $organisateur->setOrganisateur($this);
         }
 
         return $this;
     }
 
-    public function removeSortieOrganisee(Sortie $sortie): self
+    public function removeOrganisateur(Sortie $organisateur): self
     {
-        ($this->sortiesOrganisees->removeElement($sortie));
+        if ($this->organisateur->removeElement($organisateur)) {
+            // set the owning side to null (unless already changed)
+            if ($organisateur->getOrganisateur() === $this) {
+                $organisateur->setOrganisateur(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getRoles()
-    {
-        // TODO: Implement getRoles() method.
-    }
-
-    public function getPassword():string
-    {
-        return $this->getMotPasse();
-    }
-
-    public function getSalt()
-    {
-        return null;
-    }
-
-    public function eraseCredentials()
-    {
-
-    }
-
-    public function getUserIdentifier()
-    {
-        return $this->getPseudo();
-    }
-
-    public function getUsername()
-    {
-        return $this->getPseudo();
-    }
 }
