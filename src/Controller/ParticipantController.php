@@ -3,15 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
-use App\Form\EditProfile;
+use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/UserProfile")
+ * @Route("/participant")
  */
 class ParticipantController extends AbstractController
 {
@@ -25,6 +26,26 @@ class ParticipantController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/new", name="app_participant_new", methods={"GET", "POST"})
+     */
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $participant = new Participant();
+        $form = $this->createForm(ParticipantType::class, $participant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $participantRepository->add($participant, true);
+
+            return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('participant/new.html.twig', [
+            'participant' => $participant,
+            'form' => $form,
+        ]);
+    }
 
     /**
      * @Route("/{id}", name="app_participant_show", methods={"GET"})
@@ -32,17 +53,18 @@ class ParticipantController extends AbstractController
     public function show(Participant $participant): Response
     {
         return $this->render('participant/show.html.twig', [
-            'UserProfile' => $participant,
+            'participant' => $participant,
         ]);
     }
 
     /**
-     * @Route("{id}/edit", name="app_participant_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="app_participant_edit", methods={"GET", "POST"})
      */
     public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
-        $form = $this->createForm(EditProfile::class, $participant);
+        $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $participantRepository->add($participant, true);
 
@@ -50,7 +72,7 @@ class ParticipantController extends AbstractController
         }
 
         return $this->renderForm('participant/edit.html.twig', [
-            'UserProfile' => $participant,
+            'participant' => $participant,
             'form' => $form,
         ]);
     }
