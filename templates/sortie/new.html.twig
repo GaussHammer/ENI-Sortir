@@ -8,8 +8,8 @@
     {{ form_start(form)}}
         {{ form_widget(form) }}
         <p>Campus: {{ org.campus.nom }}</p>
-    <p>Etat: {{ sortie.etat.libelle }}</p>
-    <button class="btn">{{ button_label|default('Save') }}</button>
+        <p>Etat: {{ sortie.etat.libelle }}</p>
+        <button class="btn">{{ button_label|default('Save') }}</button>
     {{ form_end(form) }}
 
     <a href="{{ path('app_sortie_index') }}">back to list</a>

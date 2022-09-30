@@ -5,6 +5,9 @@
 {% block body %}
     <h1>Edit Sortie</h1>
 
+    Ville : {{ sortie.lieu.ville.nom }}
+    Lieu : {{ sortie.lieu.nom }}
+
     {{ include('sortie/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('app_sortie_index') }}">back to list</a>
