@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Entity\Sortie;
 use App\Form\ParticipantType;
 use App\Repository\ParticipantRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,38 +19,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/", name="app_participant_index", methods={"GET"})
+     * @Route("/myProfile", name="MyProfile", methods={"GET"})
      */
-    public function index(ParticipantRepository $participantRepository): Response
+    public function MonProfil(ParticipantRepository $participantRepository, SortieRepository $sortieRepository): Response
     {
-        return $this->render('participant/index.html.twig', [
-            'participants' => $participantRepository->findAll(),
-        ]);
+        $pseudo = $this->getUser()->getUserIdentifier();
+        return $this->render('participant/monProfil.html.twig', [
+            'monProfil' => $participantRepository->findBy(['pseudo'=>$pseudo]),
+            //'mesSorties'=> $sortieRepository->findAll()
+            ]);
     }
 
     /**
-     * @Route("/new", name="app_participant_new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $participant = new Participant();
-        $form = $this->createForm(ParticipantType::class, $participant);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $participantRepository->add($participant, true);
-
-            return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('participant/new.html.twig', [
-            'participant' => $participant,
-            'form' => $form,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="app_participant_show", methods={"GET"})
+     * @Route("/{id}", name="user_profile", methods={"GET"})
      */
     public function show(Participant $participant): Response
     {
@@ -58,7 +41,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="app_participant_edit", methods={"GET", "POST"})
+     * @Route("/{id}/edit", name="edit_profile", methods={"GET", "POST"})
      */
     public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
@@ -67,8 +50,8 @@ class ParticipantController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $participantRepository->add($participant, true);
-
-            return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+            //TODO:add flash message
+            return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('participant/edit.html.twig', [
@@ -78,7 +61,7 @@ class ParticipantController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_participant_delete", methods={"POST"})
+     * @Route("/{id}", name="profile_delete", methods={"POST"})
      */
     public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
@@ -86,6 +69,6 @@ class ParticipantController extends AbstractController
             $participantRepository->remove($participant, true);
         }
 
-        return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('main_home', [], Response::HTTP_SEE_OTHER);
     }
 }

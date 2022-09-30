@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block header %}
+    <h1>Sortir</h1>
+    {% if(app.user == null) %}
+        <a href="{{ path('app_login') }}"><button>Login</button></a>
+    {% endif %}
+    {%if(app.user) %}
+        <nav>
+        <a id="navbutton" href="{{ path('main_home') }}"><button>Accueil</button></a>
+        <a id="navbutton"href="{{ path('MyProfile') }}"><button>Mon profil</button></a>
+            <a id="navbutton" href="{{ path('create_sortie') }}"><button>Créer une sortie</button></a>
+        </nav>
+    {% endif  %}
+{% endblock %}

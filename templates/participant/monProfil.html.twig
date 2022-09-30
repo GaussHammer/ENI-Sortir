@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ parent() }} Mon profil{% endblock %}
+{% block body %}
+    <h2>Mon profil</h2>
+        {% for monProfil in monProfil %}
+            <div class="ProfileField">
+                <p>Pseudo: </p>
+                <p>{{ monProfil.pseudo }}</p>
+            </div >
+            <div class="ProfileField">
+                <p>Nom: </p>
+                <p>{{ monProfil.nom }}</p>
+            </div >
+            <div class="ProfileField">
+                <p>Prenom: </p>
+                <p>{{ monProfil.prenom }}</p>
+            </div>
+            <div class="ProfileField">
+                <p>Tél: </p>
+                <p>{{ monProfil.telephone }}</p>
+            </div>
+            <div class="ProfileField">
+                <p>Mail: </p>
+                <p>{{ monProfil.mail }}</p>
+            </div>
+            <a href="{{ path('edit_profile', {'id': monProfil.id}) }}"><button>Modifier mes informations</button></a>
+
+        {% endfor %}
+{% endblock %}

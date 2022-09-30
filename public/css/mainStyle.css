@@ -1,0 +1,26 @@
+body{
+    background: linear-gradient(45deg, rgba(160,255,158,1) 0%, rgb(180, 231, 255) 100%);
+    background-attachment: fixed;
+    font-family: 'Rubik', sans-serif;
+}
+
+button{
+    border: none;
+    border-radius: 15px;
+    padding: 5px 15px 5px 15px;
+    transition: background-color 500ms, color 500ms;
+}
+#navbutton{
+    display: inline-flex;
+    margin-left: 2em;
+
+}
+
+button:hover{
+    color:white;
+    background-color: rgba(15, 1, 78, 0.493);
+}
+
+a{
+    text-decoration: none;
+}
