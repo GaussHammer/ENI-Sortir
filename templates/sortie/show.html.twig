@@ -43,8 +43,12 @@
                 <th>InfoSortie</th>
                 <td>{{ sortie.infoSortie }}</td>
             </tr>
+
         </tbody>
     </table>
+    {% for participant in sortie.participant %}
+        <p>{{ participant.pseudo }}</p>
+    {% endfor %}
 
     <a href="{{ path('app_sortie_index') }}">back to list</a>
 

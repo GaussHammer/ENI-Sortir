@@ -6,10 +6,13 @@ use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\InscriptionType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Button;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,6 +48,7 @@ class SortieController extends AbstractController
         $sortie->setOrganisateur($organisateur);
         $sortie->setEtat($etat);
         $sortie->setCampus($campus);
+        $sortie->addParticipant($organisateur);
         $form = $this->createForm(SortieType::class, $sortie);
         $form->handleRequest($request);
 
@@ -67,6 +71,7 @@ class SortieController extends AbstractController
      */
     public function show(Sortie $sortie): Response
     {
+        dump($sortie);
         return $this->render('sortie/show.html.twig', [
             'sortie' => $sortie,
         ]);
@@ -103,4 +108,27 @@ class SortieController extends AbstractController
 
         return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/{id}/inscription", name="sortie_inscription", methods={"GET", "POST"})
+     */
+    public function inscription(ManagerRegistry $doctrine, Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
+    {
+        $pseudo=$this->getUser()->getUserIdentifier();
+        $participant = $doctrine->getRepository(Participant::class)->findOneBySomeField($pseudo);
+        $form = $this->createForm(InscriptionType::class, $sortie);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sortie->addParticipant($participant);
+            $sortieRepository->add($sortie, true);
+
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('sortie/Inscription.html.twig', [
+            'sortie' => $sortie,
+            'form' => $form,
+        ]);
+    }
+
 }

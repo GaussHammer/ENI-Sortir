@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Sortie{% endblock %}
+
+{% block body %}
+    <h1>Edit Sortie</h1>
+    <p>Nom : {{ sortie.nom }}</p>
+    <p>Ville : {{ sortie.lieu.ville.nom }}</p>
+    <p>Lieu : {{ sortie.lieu.nom }}</p>
+    {%  if (sortie.participant(app.user)!=true) %}
+    {{ include('sortie/_form.html.twig', {'button_label': 'Je m\'inscris'}) }}
+    {% endif %}
+    <a href="{{ path('app_sortie_index') }}"><button>Retour</button></a>
+{% endblock %}
