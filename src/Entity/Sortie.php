@@ -59,7 +59,7 @@ class Sortie
     private $campus;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="sorties")
+     * @ORM\ManyToOne(targetEntity=Lieu::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $lieu;

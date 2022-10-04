@@ -13,4 +13,31 @@
     {{ form_end(form) }}
 
     <a href="{{ path('app_sortie_index') }}">back to list</a>
+
+    <script>
+        window.onload = () => {
+            let ville = document.querySelector("#sortie_ville");
+
+            ville.addEventListener("change", function(){
+
+                fetch(
+                    'http://localhost:8000/api/lieux/' + this.value
+                )
+
+                .then(response => response.json())
+                .then(json => {
+                    const lieux = document.querySelector('#sortie_lieu');
+                    lieux.innerHTML="";
+                    json.map(lieu=>{
+                        lieux.innerHTML+=`<option value="${lieu.id}">${lieu.nom}</option>`
+                    })
+                })
+
+                .catch(error => {
+                    console.log(error);
+                })
+
+            });
+        };
+    </script>
 {% endblock %}
