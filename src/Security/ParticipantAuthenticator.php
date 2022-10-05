@@ -30,7 +30,7 @@ class ParticipantAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $pseudo = $request->request->get('pseudo', '');
+        $pseudo = $request->request->get('identifiant', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $pseudo);
 

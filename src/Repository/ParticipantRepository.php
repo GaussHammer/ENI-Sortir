@@ -8,6 +8,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @extends ServiceEntityRepository<Participant>
@@ -17,7 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method Participant[]    findAll()
  * @method Participant[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ParticipantRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class ParticipantRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -79,5 +81,16 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+
+    public function loadUserByUsername(string $username): ?Participant
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.pseudo = :pseudo or p.mail = :mail')
+            ->setParameter('pseudo', $username)
+            ->setParameter('mail', $username)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }
