@@ -24,3 +24,15 @@ button:hover{
 a{
     text-decoration: none;
 }
+
+.element{
+    background: hsla(0, 0%, 100%, 0.418);
+    padding: 2em 2em 2em 2em;
+    border-radius: 20px;
+    display: table;
+}
+
+h2{
+    display: flex;
+    justify-content: center;
+}

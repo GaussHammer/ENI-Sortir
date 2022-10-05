@@ -3,44 +3,44 @@
 {% block title %}Sortie index{% endblock %}
 
 {% block body %}
-    <h1>Sortie index</h1>
+    <h2>Liste des sorties</h2>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>DateHeureDebut</th>
-                <th>Duree</th>
-                <th>DateLimiteInscription</th>
-                <th>NbInscriptionsMax</th>
-                <th>InfoSortie</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
         {% for sortie in sorties %}
-            <tr>
-                <td>{{ sortie.nom }}</td>
-                <td>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sortie.duree }}</td>
-                <td>{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('Y-m-d') : '' }}</td>
-                <td>{{ sortie.nbInscriptionsMax }}</td>
-                <td>{{ sortie.infoSortie }}</td>
-                <td>
-                    {% if(sortie.organisateur.id == app.user.id or app.user.administrateur==true) %}
+            <div id="mainCont">
+            <div class="element">
+            <div class="field">
+            <p>Nom: </p>
+            <p>{{ sortie.nom }}</p>
+            </div>
+            <div class="field">
+            <p>Date: </p>
+            <p>{{ sortie.dateHeureDebut ? sortie.dateHeureDebut|date('d-m-Y') : '' }}</p>
+            </div>
+            <div class="field">
+            <p>Date limite d'inscription: </p>
+            <p{{ sortie.dateLimiteInscription ? sortie.dateLimiteInscription|date('d-m-Y') : '' }}</p>
+            </div>
+            <div class="field">
+            <p>Nombre maximum d'inscrits: </p>
+            <p>{{ sortie.nbInscriptionsMax }}</p>
+            </div>
+            <p>Campus</p>
+            <p>{{ sortie.campus.nom }}</p>
+            <p>InfoSortie</p>
+            <p>{{ sortie.infoSortie }}</p>
+            <p>
+                {% if(sortie.organisateur.id == app.user.id or app.user.administrateur==true) %}
                     <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a>
-                    {% endif %}
-                    <a href="{{ path('sortie_inscription', {'id': sortie.id})}}"><button>Afficher</button></a>
+                {% endif %}
+                <a href="{{ path('sortie_inscription', {'id': sortie.id})}}"><button>Afficher</button></a>
 
-                </td>
-            </tr>
+            </p>
         {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
+                <p>no records found</p>
+            </div>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
+
 
     <a href="{{ path('create_sortie') }}">Create new</a>
 {% endblock %}

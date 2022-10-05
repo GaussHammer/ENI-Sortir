@@ -1,4 +1,23 @@
-.ProfileField{
+#label{
+    display: inline-block;
+    padding-right: 5em;
+}
+
+.field{
+    display: flex;
+    justify-content: space-between;
+}
+
+.validate{
+    display: flex;
+    justify-content: center;
+}
+
+#fieldValue{
+    display: inline-flex;
+}
+
+#mainCont{
     display: flex;
     justify-content: center;
 }

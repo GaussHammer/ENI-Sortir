@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'sortie/index.html.twig' %}
 
 {% block title %}Edit Sortie{% endblock %}
 
@@ -7,8 +7,20 @@
     <p>Nom : {{ sortie.nom }}</p>
     <p>Ville : {{ sortie.lieu.ville.nom }}</p>
     <p>Lieu : {{ sortie.lieu.nom }}</p>
-    {%  if (sortie.participant(app.user)!=true) %}
+    <p>Participants:</p>
+    {% for participant in sortie.participant %}
+        {% if(participant.id == app.user.id) %}
+        <p><a href="{{ path('MyProfile') }}"><button>{{ participant.pseudo }}</button></a></p>
+        {% else %}
+        <p><a href="{{ path('user_profile', {'id':participant.id}) }}"><button>{{ participant.pseudo }}</button></a></p>
+            {% endif %}
+    {% endfor %}
+
+    {%if app.user.participe.contains(sortie)==false %}
     {{ include('sortie/_form.html.twig', {'button_label': 'Je m\'inscris'}) }}
+    {% endif %}
+    {% if app.user.participe.contains(sortie) %}
+    <a href="{{ path('sortie_desistement', {'id':sortie.id }) }} "><button>Se désister</button></a>
     {% endif %}
     <a href="{{ path('app_sortie_index') }}"><button>Retour</button></a>
 {% endblock %}

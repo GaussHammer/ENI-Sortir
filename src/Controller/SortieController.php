@@ -6,6 +6,7 @@ use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\DesistementType;
 use App\Form\InscriptionType;
 use App\Form\SortieType;
 use App\Repository\SortieRepository;
@@ -126,6 +127,28 @@ class SortieController extends AbstractController
         }
 
         return $this->renderForm('sortie/Inscription.html.twig', [
+            'sortie' => $sortie,
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/desistement", name="sortie_desistement", methods={"GET","POST"})
+     */
+    public function desistement(ManagerRegistry $doctrine, Request $request, Sortie $sortie, SortieRepository $sortieRepository): Response
+    {
+        $pseudo = $this->getUser()->getUserIdentifier();
+        $participant = $doctrine->getRepository(Participant::class)->findOneBySomeField($pseudo);
+        $form = $this->createForm(DesistementType::class, $sortie);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $sortie->removeParticipant($participant);
+            $participant->removeParticipe($sortie);
+            $sortieRepository->add($sortie, true);
+
+            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+        }
+        return $this->renderForm('sortie/Desistement.html.twig', [
             'sortie' => $sortie,
             'form' => $form,
         ]);
