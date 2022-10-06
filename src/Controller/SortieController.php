@@ -28,6 +28,7 @@ class SortieController extends AbstractController
      */
     public function index(SortieRepository $sortieRepository): Response
     {
+
         return $this->render('sortie/index.html.twig', [
             'sorties' => $sortieRepository->findAll(),
         ]);
@@ -41,15 +42,12 @@ class SortieController extends AbstractController
                         ManagerRegistry $doctrine
                         ): Response
     {
-        $pseudo=$this->getUser()->getUserIdentifier();
-        $organisateur = $doctrine->getRepository(Participant::class)->findOneBySomeField($pseudo);
-        $campus = $doctrine->getRepository(Campus::class)->findOneBySomeField($organisateur->getCampus()->getNom());
+
         $etat = $doctrine->getRepository(Etat::class)->findOneBySomeField('Créée');
         $sortie = new Sortie();
-        $sortie->setOrganisateur($organisateur);
+        $sortie->setOrganisateur($this->getUser());
         $sortie->setEtat($etat);
-        $sortie->setCampus($campus);
-        $sortie->addParticipant($organisateur);
+        $sortie->setCampus($this->getUser()->getCampus());
         $form = $this->createForm(SortieType::class, $sortie);
         $form->handleRequest($request);
 
@@ -57,13 +55,12 @@ class SortieController extends AbstractController
 
             $sortieRepository->add($sortie, true);
 
-            return $this->redirectToRoute('app_sortie_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_sortie_index');
         }
 
         return $this->renderForm('sortie/new.html.twig', [
             'sortie' => $sortie,
-            'form' => $form,
-            'org' => $organisateur
+            'form' => $form
         ]);
     }
 
