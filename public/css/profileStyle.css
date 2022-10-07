@@ -21,3 +21,7 @@
     display: flex;
     justify-content: center;
 }
+
+#menuCont{
+    display:inline-block;
+}

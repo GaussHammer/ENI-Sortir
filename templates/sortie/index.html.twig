@@ -6,7 +6,7 @@
     <h2>Liste des sorties</h2>
 
         {% for sortie in sorties %}
-            <div id="mainCont">
+            <div id="menuCont">
             <div class="element">
             <div class="field">
             <p>Nom: </p>
@@ -24,9 +24,11 @@
             <p>Nombre maximum d'inscrits: </p>
             <p>{{ sortie.nbInscriptionsMax }}</p>
             </div>
-            <p>Campus</p>
+                <div class="field">
+            <p>Campus:</p>
             <p>{{ sortie.campus.nom }}</p>
-            <p>InfoSortie</p>
+                </div>
+            <p>Info Sortie:</p>
             <p>{{ sortie.infoSortie }}</p>
             <p>
                 {% if(sortie.organisateur.id == app.user.id or app.user.administrateur==true) %}
