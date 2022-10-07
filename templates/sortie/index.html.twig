@@ -30,7 +30,7 @@
             <p>{{ sortie.infoSortie }}</p>
             <p>
                 {% if(sortie.organisateur.id == app.user.id or app.user.administrateur==true) %}
-                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}">edit</a>
+                    <a href="{{ path('app_sortie_edit', {'id': sortie.id}) }}"><button>Modifier</button></a>
                 {% endif %}
                 <a href="{{ path('sortie_inscription', {'id': sortie.id})}}"><button>Afficher</button></a>
 
@@ -40,7 +40,4 @@
             </div>
             </div>
         {% endfor %}
-
-
-    <a href="{{ path('create_sortie') }}">Create new</a>
 {% endblock %}
