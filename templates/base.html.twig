@@ -5,21 +5,27 @@
         <title>{% block title %}Sortir{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
         {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+
         <link rel="stylesheet" href="{{ asset('css/mainStyle.css') }}">
         <link rel="stylesheet" href="{{ asset('css/profileStyle.css') }}">
+        {%  block css %}
+
+        {% endblock %}
         <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
         {% block javascripts %}
         {% endblock %}
     </head>
     <body>
-    <header>
-        {% block header %}
-            {% include 'Headers/Main_Header.html.twig' %}
-        {% endblock %}
-    </header>
-        {% block body %}
+        <header>
+            {% block header %}
+                {% include 'Headers/Main_Header.html.twig' %}
+            {% endblock %}
+        </header>
+        <main>
 
+            {% block body %}
 
-        {% endblock %}
+            {% endblock %}
+        </main>
     </body>
 </html>

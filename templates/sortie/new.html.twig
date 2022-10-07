@@ -1,19 +1,24 @@
 {% extends 'base.html.twig' %}
 
+{% block css %}<link rel="stylesheet" href="{{ asset('css/newViewCss.css') }}">{%  endblock %}
+
 {% block title %}New Sortie{% endblock %}
 
 {% block body %}
-    <h1>Create new Sortie</h1>
 
-    {{ form_start(form)}}
-        {{ form_widget(form) }}
-        <p>Campus: {{ app.user.campus.nom }}</p>
+    <div class="form_new_sortie">
+        <h1>Create new Sortie</h1>
 
-        <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
-    <a href="{{ path('app_lieu_new') }}"><button>Ajouter un nouveau lieu: </button></a>
-    <a href="{{ path('app_sortie_index') }}">back to list</a>
+        {{ form_start(form)}}
+            {{ form_widget(form) }}
+            <p>Campus: {{ app.user.campus.nom }}</p>
 
+            <button class="btn">{{ button_label|default('Save') }}</button>
+        {{ form_end(form) }}
+        <br>
+        <a href="{{ path('app_lieu_new') }}"><button>Ajouter un nouveau lieu: </button></a>
+        <a href="{{ path('app_sortie_index') }}">back to list</a>
+    </div>
     <script>
         window.onload = () => {
             let ville = document.querySelector("#sortie_ville");
